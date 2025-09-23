@@ -1,0 +1,13 @@
+# docker-compose-standalone.yml
+version: "3.9"
+services:
+  mongo:
+    image: mongo:7
+    container_name: mongo-standalone
+    ports:
+      - "27018:27017"
+    volumes:
+      - mongo_data:/data/db
+
+volumes:
+  mongo_data:
