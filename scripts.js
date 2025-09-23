@@ -86,3 +86,7 @@ db.items.find().pretty(); //reads from secondary
 
 //connecting directly using mongosh:
 // mongosh "mongodb://mongo2:27018/?directConnection=true"
+
+//DataGrip connection:
+//choose connection type: only useImperativeHandle(
+//connection string: mongodb://localhost:27017,localhost:27018,localhost:27019/?replicaSet=rs0
