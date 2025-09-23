@@ -16,6 +16,12 @@ rs.initiate({
   ],
 });
 
+//NOTE: It is crucial to map mongo1 to port 27017 on the host machine if you want to use MongoDB Compass
+// or other GUI tools to connect to the replica set.
+// This is because most GUI tools default to connecting to port 27017.
+// If mongo1 is not mapped to this port,
+// you will need to specify the custom port in your connection settings.
+
 //check status:
 rs.status();
 
@@ -59,3 +65,24 @@ db.items.insertOne(
 
 // Read from secondary
 db.items.find().readPref("secondary").pretty();
+
+//cleanup and start over:
+//docker compose -f docker-compose-replicaset.yml down -v
+//docker compose -f docker-compose-replicaset.yml up -d
+
+//connect to replica set using MongoDB Compass or another GUI tool:
+//connection string: mongodb://localhost:27017,localhost:27018,localhost:27019/?replicaSet=rs0
+
+//This will connect to the primary by default.
+//To read from secondary, set the read preference in the GUI tool to "secondary" or "secondaryPreferred".
+db.getMongo().setReadPref("secondary");
+
+db.items.find().pretty(); //reads from secondary
+
+// connect the secondary directly (e.g., mongo2):
+// connection string: mongodb://mongo2:27018/?directConnection=true
+// it will connect as secondary by default
+db.items.find().pretty(); //reads from secondary
+
+//connecting directly using mongosh:
+// mongosh "mongodb://mongo2:27018/?directConnection=true"
