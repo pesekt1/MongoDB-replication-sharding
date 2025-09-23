@@ -5,7 +5,7 @@ services:
     image: mongo:7
     container_name: mongo1
     ports:
-      - "27020:27017"
+      - "27017:27017" # Map mongo1 to host port 27017 for MongoDB Compass compatibility
     command: ["mongod", "--replSet", "rs0", "--bind_ip_all"]
     volumes:
       - mongo1_data:/data/db
@@ -14,7 +14,7 @@ services:
     image: mongo:7
     container_name: mongo2
     ports:
-      - "27021:27017"
+      - "27018:27017"
     command: ["mongod", "--replSet", "rs0", "--bind_ip_all"]
     volumes:
       - mongo2_data:/data/db
@@ -23,7 +23,7 @@ services:
     image: mongo:7
     container_name: mongo3
     ports:
-      - "27022:27017"
+      - "27019:27017"
     command: ["mongod", "--replSet", "rs0", "--bind_ip_all"]
     volumes:
       - mongo3_data:/data/db
