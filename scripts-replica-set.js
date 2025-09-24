@@ -89,4 +89,4 @@ db.items.find().pretty(); //reads from secondary
 
 //DataGrip connection:
 //choose connection type: only useImperativeHandle(
-//connection string: mongodb://localhost:27017,localhost:27018,localhost:27019/?replicaSet=rs0
+//connection string: mongodb://mongo1:27017,mongo2:27018,mongo3:27019/?replicaSet=rs0
