@@ -71,7 +71,7 @@ db.items.find().readPref("secondary").pretty();
 //docker compose -f docker-compose-replicaset.yml up -d
 
 //connect to replica set using MongoDB Compass or another GUI tool:
-//connection string: mongodb://localhost:27017,localhost:27018,localhost:27019/?replicaSet=rs0
+//connection string: mongodb://mongo1:27017,mongo2:27018,mongo3:27019/?replicaSet=rs0
 
 //This will connect to the primary by default.
 //To read from secondary, set the read preference in the GUI tool to "secondary" or "secondaryPreferred".
