@@ -103,3 +103,58 @@ then run:
 ```
 docker exec -it mongos mongosh ./demo-sharding-full.js
 ```
+
+now in mongosh we can check the sh.status() to see the chunks distribution across the shards.
+
+## Another demo: mongoCities100000.json
+
+enable sharding on a new database and collection - distribute cities collection on the "name" field:
+in mongosh connected to mongos run:
+
+```
+sh.enableSharding("geoDB");
+use geoDB;
+db.cities.createIndex({ name: 1 })
+sh.shardCollection("geoDB.cities", { name: 1 });
+```
+
+leave the mongosh shell.
+
+copy the file to the mongos container and import it:
+
+```
+docker cp "./mongoCities100000.json" mongos:/mongoCities100000.json
+```
+
+import the data:
+
+```
+docker exec -i mongos mongoimport \
+  --db geoDB \
+  --collection cities \
+  --file ./mongoCities100000.json \
+  --jsonArray
+```
+
+It is still too small dataset so its all in one chkunk on one shard.
+
+Manually split the chunk in two:
+
+```
+print("Splitting chunks manually by first letter...");
+
+// Split chunks based on first letter ranges
+sh.splitAt("geoDB.cities", { name: "A" });
+sh.splitAt("geoDB.cities", { name: "G" });
+sh.splitAt("geoDB.cities", { name: "M" });
+sh.splitAt("geoDB.cities", { name: "S" });
+sh.splitAt("geoDB.cities", { name: "Z" });
+
+// Move chunks to specific shards
+print("Moving chunks to different shards...");
+
+sh.moveChunk("geoDB.cities", { name: "B" }, "rs0");
+sh.moveChunk("geoDB.cities", { name: "H" }, "rs1");
+sh.moveChunk("geoDB.cities", { name: "N" }, "rs2");
+sh.moveChunk("geoDB.cities", { name: "T" }, "rs0");
+```
