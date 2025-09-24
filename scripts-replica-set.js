@@ -70,6 +70,18 @@ db.items.find().readPref("secondary").pretty();
 //docker compose -f docker-compose-replicaset.yml down -v
 //docker compose -f docker-compose-replicaset.yml up -d
 
+// Add hostnames to your system
+
+// If you prefer to keep mongo1, mongo2, mongo3 inside the config, you can trick your host into knowing them:
+
+// Edit your hosts file (C:\Windows\System32\drivers\etc\hosts on Windows).
+
+// Add:
+
+// 127.0.0.1 mongo1
+// 127.0.0.1 mongo2
+// 127.0.0.1 mongo3
+
 //connect to replica set using MongoDB Compass or another GUI tool:
 //connection string: mongodb://mongo1:27017,mongo2:27018,mongo3:27019/?replicaSet=rs0
 
