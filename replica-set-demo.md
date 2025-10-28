@@ -1,5 +1,10 @@
 # MongoDB Replica Set: Step-by-Step Guide
 
+> **Note:**
+>
+> - Commands in `bash` blocks are for your terminal or PowerShell.
+> - Commands in `js` blocks are for the MongoDB shell (`mongosh`).
+
 ## 1. Start the Replica Set Containers
 
 Open a terminal in your project directory and run:
@@ -42,7 +47,7 @@ rs.initiate({
 
 ## 4. Check Replica Set Status
 
-```powershell
+```javascript
 rs.status();
 ```
 
@@ -52,7 +57,7 @@ rs.status();
 
 Switch to your database and insert a document:
 
-```powershell
+```javascript
 use testDB
 db.items.insertOne({ name: "hello", ts: new Date() });
 ```
@@ -65,6 +70,9 @@ Connect to a secondary node:
 
 ```powershell
 docker exec -it mongo2 mongosh
+```
+
+```javascript
 use testDB
 rs.slaveOk()   // allow reads on secondary
 db.items.find().pretty()
@@ -177,7 +185,7 @@ mongodb://mongo1:27017,mongo2:27018,mongo3:27019/?replicaSet=rs0
 
 **Read from Secondary in Shell:**
 
-```powershell
+```javascript
 db.getMongo().setReadPref("secondary");
 db.items.find().pretty();
 ```

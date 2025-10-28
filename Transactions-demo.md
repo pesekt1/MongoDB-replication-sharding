@@ -1,5 +1,10 @@
 # 🧩 MongoDB Replica Set Transaction Demos (Docker Setup)
 
+> **Note:**
+>
+> - Commands in `bash` blocks are for your terminal or PowerShell.
+> - Commands in `js` blocks are for the MongoDB shell (`mongosh`).
+
 This guide demonstrates various transaction scenarios, including commits, rollbacks, replication, and failover handling. You need a MongoDB replica set running in Docker.
 
 ## 1️⃣ Verify the Replica Set

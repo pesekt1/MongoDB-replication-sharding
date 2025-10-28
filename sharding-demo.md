@@ -1,12 +1,24 @@
 # Sharding demo
 
+> **Note:**  
+> This guide uses several shells:
+>
+> - **PowerShell/bash** for Docker commands (e.g., `docker compose`, `docker exec`, `docker cp`)
+> - **mongosh** for MongoDB shell commands (e.g., `rs.initiate`, `sh.addShard`, `sh.status`)
+>
+> Each command block below is annotated with the shell to use.
+
 ## run the docker compose:
+
+**Shell: PowerShell/bash**
 
 ```
 docker compose -f docker-compose-sharding.yml up -d
 ```
 
 ## initialize the config server replica set:
+
+**Shell: PowerShell/bash** (runs mongosh inside container)
 
 ```
 docker exec -it cs1 mongosh --host cs1 --port 26050 --eval '
@@ -26,6 +38,8 @@ rs.initiate({
 
 ### connect to shard0 replica set and initialize it:
 
+**Shell: PowerShell/bash** (runs mongosh inside container)
+
 ```
 docker exec -it shard0_1 mongosh --host shard0_1 --port 27018 --eval '
 rs.initiate({
@@ -41,6 +55,8 @@ rs.initiate({
 
 ### connect to shard1 replica set and initialize it:
 
+**Shell: PowerShell/bash** (runs mongosh inside container)
+
 ```
 docker exec -it shard1_1 mongosh --host shard1_1 --port 27018 --eval '
 rs.initiate({
@@ -52,10 +68,11 @@ rs.initiate({
   ]
 })
 '
-
 ```
 
 ### connect to shard2 replica set and initialize it:
+
+**Shell: PowerShell/bash** (runs mongosh inside container)
 
 ```
 docker exec -it shard2_1 mongosh --host shard2_1 --port 27018 --eval '
@@ -72,6 +89,8 @@ rs.initiate({
 
 ## connect to the mongos instance and add the shards:
 
+**Shell: PowerShell/bash** (runs mongosh inside container)
+
 ```
 docker exec -it mongos mongosh --eval '
 sh.addShard("rs0/shard0_1:27018,shard0_2:27018,shard0_3:27018");
@@ -85,6 +104,8 @@ sh.shardCollection("testDB.myCollection", { shardKey: 1 });
 
 ## verify the sharding status:
 
+**Shell: PowerShell/bash** (to enter mongosh), then **mongosh** for commands
+
 ```
 docker exec -it mongos mongosh
 sh.status()          // shows all shards and replica set members
@@ -92,13 +113,13 @@ sh.status()          // shows all shards and replica set members
 
 ## run the demo script:
 
-exit the shell and run:
+**Shell: PowerShell/bash**
 
 ```
 docker cp "./demo-sharding-full.js" mongos:/demo-sharding-full.js
 ```
 
-then run:
+**Shell: PowerShell/bash**
 
 ```
 docker exec -it mongos mongosh ./demo-sharding-full.js
@@ -109,7 +130,8 @@ now in mongosh we can check the sh.status() to see the chunks distribution acros
 ## Another demo: mongoCities100000.json
 
 enable sharding on a new database and collection - distribute cities collection on the "name" field:
-in mongosh connected to mongos run:
+
+**Shell: mongosh** (connected to mongos)
 
 ```
 sh.enableSharding("geoDB");
@@ -120,13 +142,15 @@ sh.shardCollection("geoDB.cities", { name: 1 });
 
 leave the mongosh shell.
 
-copy the file to the mongos container and import it:
+**Shell: PowerShell/bash**
 
 ```
 docker cp "./mongoCities100000.json" mongos:/mongoCities100000.json
 ```
 
 import the data:
+
+**Shell: PowerShell/bash**
 
 ```
 docker exec -i mongos mongoimport \
@@ -139,6 +163,8 @@ docker exec -i mongos mongoimport \
 It is still too small dataset so its all in one chkunk on one shard.
 
 Manually split the chunk in two:
+
+**Shell: mongosh** (connected to mongos)
 
 ```
 print("Splitting chunks manually by first letter...");
