@@ -1,3 +1,5 @@
+[![Ask DeepWiki](https://img.shields.io/badge/Ask-DeepWiki-blue?logo=wiki)](https://deepwiki.com/pesekt1/MongoDB-replication-sharding)
+
 # MongoDB Replication and Sharding demo
 
 ## MongoDB Replica Set - demo
