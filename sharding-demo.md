@@ -111,6 +111,12 @@ docker exec -it mongos mongosh
 sh.status()          // shows all shards and replica set members
 ```
 
+## connect to mongos using MongoDB Compass:
+
+connection string: `mongodb://localhost:27017/`
+Mongos is the routing service for sharded clusters. It routes queries to the appropriate shard(s) based on the shard key.
+It is the entry point for applications to interact with the sharded cluster.
+
 ## run the demo script:
 
 **Shell: PowerShell/bash**
