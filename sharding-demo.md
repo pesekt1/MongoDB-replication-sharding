@@ -115,10 +115,13 @@ sh.status()          // shows all shards and replica set members
 
 **Shell: PowerShell/bash**
 
+Copy the demo script into the mongos container:
+
 ```
 docker cp "./demo-sharding-full.js" mongos:/demo-sharding-full.js
 ```
 
+Execute the demo script inside the mongos container:
 **Shell: PowerShell/bash**
 
 ```
@@ -183,4 +186,10 @@ sh.moveChunk("geoDB.cities", { name: "B" }, "rs0");
 sh.moveChunk("geoDB.cities", { name: "H" }, "rs1");
 sh.moveChunk("geoDB.cities", { name: "N" }, "rs2");
 sh.moveChunk("geoDB.cities", { name: "T" }, "rs0");
+```
+
+Delete all:
+
+```
+docker compose -f docker-compose-sharding.yml down -v
 ```
